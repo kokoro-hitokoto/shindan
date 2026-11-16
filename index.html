@@ -173,7 +173,7 @@ h1{font-family:var(--serif);font-size:30px;line-height:1.5;letter-spacing:.08em;
     <div class="card"><h3>そっと伝えたいこと</h3><p id="rhonne"></p></div>
     <div class="hito" id="rhito"></div>
     <div class="stack">
-      <a class="btn gold" id="letterBtn">あなたに宛てた手紙を読む</a>
+      <a class="btn gold" id="letterBtn" target="_blank" rel="noopener">あなたに宛てた手紙を読む</a>
       <div class="note" id="letterNote"></div>
       <a class="btn soft" id="noteBtn" target="_blank" rel="noopener">noteをフォローする</a>
       <button class="btn soft" id="deepBtn" onclick="begin('deep')">くわしい診断（ちがう16の場面）で「こころの影」も見る</button>
@@ -191,7 +191,14 @@ h1{font-family:var(--serif);font-size:30px;line-height:1.5;letter-spacing:.08em;
 // 集計用：Google Apps ScriptのウェブアプリURL（空なら送信しない）
 const LOG_URL = "https://script.google.com/macros/s/AKfycbx6ujh-t34QoWKLcUdoRc_ysW1sxL6v2ThSjiYMaC1wdmZGNVbSl961xbJpI38Tyyi2/exec";
 // タイプ別の手紙（かんたん診断・くわしい診断のメイン用）
-const LETTER_URLS = { subaru:"", oborozuki:"", hokkyokusei:"", akenomyojo:"", mangetsu:"", mikazuki:"" };
+const LETTER_URLS = {
+  subaru:"https://note.com/kokoro_hitokoto/n/n40ed7f3dc3ae",
+  oborozuki:"https://note.com/kokoro_hitokoto/n/nca8cb79e0dab",
+  hokkyokusei:"https://note.com/kokoro_hitokoto/n/nbb0e2209d5f2",
+  akenomyojo:"https://note.com/kokoro_hitokoto/n/n22185df4fb0a",
+  mangetsu:"https://note.com/kokoro_hitokoto/n/n0612b386bfc7",
+  mikazuki:"https://note.com/kokoro_hitokoto/n/ne2218d13b486"
+};
 // 組み合わせの手紙（くわしい診断用）。キーは「メイン_サブ」例: "subaru_akenomyojo"
 const COMBO_URLS = {};
 // noteのクリエイターページURL（手紙がまだ無いときの行き先）

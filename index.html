@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>こころのタイプ診断｜こころにひとこと</title>
+<meta name="description" content="こんなとき、どんな言葉をかけられたい？ 選んだ言葉から、あなたのこころのタイプがわかります。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&display=swap">
+<style>
+:root{--bg:#F3EEE5;--ink:#2A2520;--sub:#6E6458;--ac:#B5775A;--navy:#1B2233;--cream:#EDE6D6;--gold:#C9A96E;--line:#E2D9CA}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Shippori Mincho','Noto Serif JP','Hiragino Mincho ProN','Yu Mincho',serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:560px;margin:0 auto;padding:28px 22px 60px;min-height:100vh;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.3em;color:var(--sub)}
+.brand svg{width:26px;height:26px}
+.view{display:none;flex:1;flex-direction:column}
+.view.on{display:flex}
+h1{font-size:30px;line-height:1.7;letter-spacing:.06em;margin:50px 0 18px;font-weight:700}
+p.lead{font-size:16px;line-height:2.1;margin:0 0 12px}
+.small{font-size:13px;color:var(--sub);line-height:1.9}
+.btn{display:block;width:100%;border:none;border-radius:999px;padding:17px 20px;font:inherit;font-size:16px;letter-spacing:.12em;cursor:pointer;text-align:center;text-decoration:none;transition:opacity .2s}
+.btn:active{opacity:.75}
+.primary{background:var(--navy);color:var(--cream)}
+.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.gold{background:var(--gold);color:var(--navy);font-weight:700}
+.spacer{flex:1;min-height:30px}
+.mode{display:block;width:100%;text-align:left;border-radius:16px;padding:18px 20px;margin:0 0 12px;font:inherit;cursor:pointer;border:1px solid var(--line);background:#FBF8F2;color:var(--ink)}
+.mode.deep{background:var(--navy);color:var(--cream);border-color:var(--navy)}
+.mode b{display:block;font-size:17px;letter-spacing:.1em;margin-bottom:4px}
+.mode span{font-size:13px;opacity:.8;line-height:1.8}
+.progress{height:3px;background:var(--line);border-radius:3px;margin:30px 0 8px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--ac);width:0;transition:width .35s}
+.count{font-size:12px;letter-spacing:.2em;color:var(--sub)}
+.scene{font-size:20px;line-height:1.8;margin:22px 0 6px;font-weight:700;letter-spacing:.04em}
+.ask{font-size:13px;color:var(--sub);letter-spacing:.12em;margin:0 0 20px}
+.opt{display:block;width:100%;text-align:left;background:#FBF8F2;border:1px solid var(--line);border-radius:14px;padding:15px 18px;margin:0 0 10px;font:inherit;font-size:16px;line-height:1.75;color:var(--ink);cursor:pointer;transition:background .15s,border-color .15s}
+.opt:hover{border-color:var(--ac)}
+.opt.picked{background:var(--navy);color:var(--cream);border-color:var(--navy)}
+.back{background:none;border:none;font:inherit;color:var(--sub);font-size:13px;letter-spacing:.15em;padding:8px 0;cursor:pointer;align-self:flex-start;margin-top:8px}
+body.dark,html.dark{background:var(--navy)}body.dark .wrap>.brand{display:none}#result{color:var(--cream)}
+#result .brand{color:#C9C2B3}
+.rlabel{font-size:13px;letter-spacing:.3em;color:var(--gold);margin:44px 0 6px}
+.rname{font-size:42px;letter-spacing:.12em;margin:0;font-weight:700}.rread{font-size:13px;letter-spacing:.3em;color:#C9C2B3;min-height:1em;margin:2px 0 6px}.ricon{width:76px;height:76px;margin:40px 0 -24px}.ricon svg{width:100%;height:100%}.why p{font-size:15px}
+.rsub{font-size:15px;letter-spacing:.12em;color:#C9C2B3;margin:4px 0 0}
+.rsub b{color:var(--gold);font-weight:500}
+.rcatch{font-size:18px;line-height:1.9;margin:16px 0 26px}
+.card{background:rgba(255,255,255,.05);border:1px solid rgba(201,169,110,.35);border-radius:16px;padding:18px;margin:0 0 14px}
+.card h3{margin:0 0 10px;font-size:13px;letter-spacing:.25em;color:var(--gold);font-weight:500}
+.card ul{margin:0;padding-left:1.1em;line-height:2;font-size:15px}
+.card p{margin:0;font-size:15px;line-height:2}
+.combo{border-color:var(--gold);background:rgba(201,169,110,.08)}
+.hito{font-size:20px;line-height:2;text-align:center;margin:30px 0;letter-spacing:.06em}
+#result .ghost{color:var(--cream);border-color:rgba(237,230,214,.3)}
+.stack>*{margin-bottom:12px}
+.note{font-size:12px;color:#C9C2B3;text-align:center;line-height:1.8;margin-top:-4px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.on{opacity:.92}
+.types{display:grid;gap:10px;margin:0 0 20px}
+.types button{text-align:left;background:rgba(255,255,255,.04);border:1px solid rgba(237,230,214,.18);border-radius:12px;color:var(--cream);font:inherit;padding:12px 14px;cursor:pointer;line-height:1.7}
+.types b{color:var(--gold);letter-spacing:.1em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><svg viewBox="0 0 48 48" fill="none"><path d="M10 7h28a6 6 0 0 1 6 6v15a6 6 0 0 1-6 6H22l-8 7v-7h-4a6 6 0 0 1-6-6V13a6 6 0 0 1 6-6z" stroke="#B5775A" stroke-width="2.5" stroke-linejoin="round"/><circle cx="24" cy="20.5" r="4" fill="#B5775A"/></svg>こころにひとこと</div>
+
+  <section class="view on" id="start">
+    <h1>こころのタイプ診断</h1>
+    <p class="lead">こんなとき、あなたは<br>どんな言葉をかけられたいですか。</p>
+    <p class="lead">ほしい言葉には、あなたのこころの形が出ます。<br>月や星にたとえて、あなたのこころを映します。<br>いちばん近いものを、選んでみてください。</p>
+    <p class="small">正解はありません。考えすぎず、読んだ瞬間に「これがほしい」と思った言葉を。</p>
+    <div class="spacer"></div>
+    <button class="mode" onclick="begin('quick')"><b>かんたん診断</b><span>8つの場面・約1分／6つのタイプから、あなたのタイプがわかる</span></button>
+    <button class="mode deep" onclick="begin('deep')"><b>くわしい診断</b><span>16の場面・約3分／タイプに加えて「こころの影」までわかる。全36通り</span></button>
+  </section>
+
+  <section class="view" id="quiz">
+    <div class="progress"><i id="bar"></i></div>
+    <div class="count" id="count"></div>
+    <div class="scene" id="scene"></div>
+    <div class="ask">どんな言葉を、かけられたい？</div>
+    <div id="opts"></div>
+    <button class="back" id="backBtn" onclick="back()">← ひとつ前へ</button>
+  </section>
+
+  <section class="view" id="result">
+    <div class="brand"><svg viewBox="0 0 48 48" fill="none"><path d="M10 7h28a6 6 0 0 1 6 6v15a6 6 0 0 1-6 6H22l-8 7v-7h-4a6 6 0 0 1-6-6V13a6 6 0 0 1 6-6z" stroke="#C9A96E" stroke-width="2.5" stroke-linejoin="round"/><circle cx="24" cy="20.5" r="4" fill="#C9A96E"/></svg>こころにひとこと</div>
+    <div class="ricon" id="ricon"></div><div class="rlabel">あなたのこころのタイプは</div>
+    <div class="rname" id="rname"></div><div class="rread" id="rread"></div>
+    <div class="rsub" id="rsub"></div>
+    <div class="rcatch" id="rcatch"></div>
+    <div class="card why"><h3 id="whyTitle"></h3><p id="rwhy"></p></div>
+    <div class="card combo" id="comboCard" style="display:none"><h3 id="comboTitle"></h3><p id="comboText"></p></div>
+    <div class="card"><h3>こんなところ、ありませんか</h3><ul id="rtraits"></ul></div>
+    <div class="card"><h3>よく言っている口ぐせ</h3><p id="rkuse"></p></div>
+    <div class="card"><h3>本当は</h3><p id="rhonne"></p></div>
+    <div class="hito" id="rhito"></div>
+    <div class="stack">
+      <a class="btn gold" id="letterBtn">あなたに宛てた手紙を読む</a>
+      <div class="note" id="letterNote"></div>
+      <button class="btn primary" id="deepBtn" onclick="begin('deep')" style="background:var(--cream);color:var(--navy)">くわしい診断で「こころの影」も見る</button>
+      <button class="btn ghost" onclick="copyShare()">結果をコピーしてシェアする</button>
+      <button class="btn ghost" onclick="toggleTypes()">ほかのタイプも見る</button>
+      <div class="types" id="types" style="display:none"></div>
+      <button class="btn ghost" onclick="restart()">最初にもどる</button>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= 設定（ここだけ書き換えればOK） ================= */
+// 集計用：Google Apps ScriptのウェブアプリURL（空なら送信しない）
+const LOG_URL = "";
+// タイプ別の手紙（かんたん診断・くわしい診断のメイン用）
+const LETTER_URLS = { subaru:"", oborozuki:"", hokkyokusei:"", akenomyojo:"", mangetsu:"", mikazuki:"" };
+// 組み合わせの手紙（くわしい診断用）。キーは「メイン_サブ」例: "subaru_akenomyojo"
+const COMBO_URLS = {};
+// noteのクリエイターページURL（手紙がまだ無いときの行き先）
+const NOTE_TOP_URL = "";
+/* ================================================================ */
+
+const ORDER=["subaru","oborozuki","hokkyokusei","akenomyojo","mangetsu","mikazuki"];
+const ICON={
+ subaru:'<svg viewBox="0 0 64 64"><g fill="#C9A96E"><circle cx="22" cy="20" r="3.2"/><circle cx="34" cy="16" r="2.4"/><circle cx="42" cy="26" r="3"/><circle cx="28" cy="31" r="2.6"/><circle cx="18" cy="38" r="2.2"/><circle cx="38" cy="40" r="2.8"/><circle cx="48" cy="34" r="1.8"/></g></svg>',
+ oborozuki:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="22" fill="#C9A96E" opacity=".12"/><circle cx="32" cy="32" r="16" fill="#C9A96E" opacity=".25"/><circle cx="32" cy="32" r="12" fill="#C9A96E" opacity=".75"/></svg>',
+ hokkyokusei:'<svg viewBox="0 0 64 64"><path d="M32 10 L35 29 L54 32 L35 35 L32 54 L29 35 L10 32 L29 29 Z" fill="#C9A96E"/><circle cx="32" cy="32" r="3" fill="#1B2233"/></svg>',
+ akenomyojo:'<svg viewBox="0 0 64 64"><path d="M6 48 H58" stroke="#C9A96E" stroke-width="1.5" opacity=".6"/><path d="M14 48 A18 10 0 0 1 50 48" fill="#C9A96E" opacity=".18"/><path d="M40 14 L42 22 L50 24 L42 26 L40 34 L38 26 L30 24 L38 22 Z" fill="#C9A96E"/></svg>',
+ mangetsu:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="18" fill="#C9A96E"/><circle cx="26" cy="27" r="3" fill="#1B2233" opacity=".12"/><circle cx="37" cy="37" r="4" fill="#1B2233" opacity=".1"/></svg>',
+ mikazuki:'<svg viewBox="0 0 64 64"><path d="M40 12 A20 20 0 1 0 40 52 A16 20 0 1 1 40 12 Z" fill="#C9A96E"/></svg>'
+};
+const TYPES={
+ subaru:{name:"すばる",read:"",catch:"人の輪の中でしか、<br>自分の光り方がわからない人。",
+  why:"すばるは、たくさんの星が寄りそって光る星の群れ。ひとつひとつは小さくても、集まると夜空でいちばん目を引く。あなたはいつも、誰かのそばで光ることを選んできた。",
+  traits:["場の空気を、誰よりも早く読んでしまう","誰かが不機嫌だと、自分のせいかと思う","人といる時は平気。帰り道にどっと疲れる"],
+  kuse:"「大丈夫、気にしないで」",honne:"あなたが気を使っているのは、やさしいからだけじゃない。誰かの機嫌がくずれるのが、ずっと怖かったから。",
+  hito:"輪の外にいても、<br>あなたはちゃんと光っている。"},
+ oborozuki:{name:"朧月",read:"おぼろづき",catch:"人に合わせるうちに、<br>自分の輪郭がぼやけた人。",
+  why:"朧月は、春の夜にかすんで見える月。たしかにそこにあるのに、輪郭がはっきりしない。あなたもちゃんとそこにいるのに、自分の形を誰かに合わせてにじませてきた。",
+  traits:["「どっちでもいいよ」が口から先に出る","頼まれると、断る前に引き受けている","自分が本当は何をしたいのか、時々わからなくなる"],
+  kuse:"「いいよ、合わせるよ」",honne:"合わせるのが得意なんじゃない。自分の希望を出して、がっかりされるのが怖いだけ。",
+  hito:"かすんでいても、<br>月は月のまま。"},
+ hokkyokusei:{name:"北極星",read:"ほっきょくせい",catch:"誰もが頼りにするのに、<br>誰にも見上げられない人。",
+  why:"北極星は、夜空でほとんど動かない星。昔から旅人は、この星をたよりに方角を決めてきた。それなのに、北極星そのものを見上げる人は少ない。",
+  traits:["気づいたら、面倒なことを全部やっている","頼るより、自分でやった方が早いと思う","頑張りに気づかれないと、ふと虚しくなる"],
+  kuse:"「私がやっておくね」",honne:"本当は、ほめてほしいんじゃない。ただ一度でいいから「いつも見てるよ」と言ってほしい。",
+  hito:"あなたを目印にしている人は、<br>あなたが思うよりたくさんいる。"},
+ akenomyojo:{name:"明けの明星",read:"あけのみょうじょう",catch:"夜になると、<br>考えが止まらなくなる人。",
+  why:"明けの明星は、夜明け前の東の空でいちばん明るく光る星。夜通し起きていた人だけが、その光に出会える。",
+  traits:["布団に入ると、過去の失敗が再生される","「このままでいいのかな」が止まらない","考えすぎて、動き出すまでに時間がかかる"],
+  kuse:"「ちょっと考えすぎかな」",honne:"不安が強いんじゃない。ちゃんと生きたいと思う気持ちが、人より少し強いだけ。",
+  hito:"考え続けた夜にも、<br>ちゃんと朝は来る。"},
+ mangetsu:{name:"満月",read:"まんげつ",catch:"いつも明るく見えるのに、<br>誰にも見せない裏側がある人。",
+  why:"月は、いつも同じ面だけを地球に向けている。どんなに明るい満月の夜も、その裏側は一度も見えない。",
+  traits:["「いつも元気だね」と言われることが多い","一人になると、急に静かになる","本音を言ったら、離れていかれる気がする"],
+  kuse:"「全然平気！」",honne:"明るさは嘘じゃない。でも、暗い日の自分も受け止めてくれる場所を、ずっと探している。",
+  hito:"見せていない半分も、<br>ちゃんとあなた。"},
+ mikazuki:{name:"三日月",read:"みかづき",catch:"欠けているところばかり、<br>見てしまう人。",
+  why:"三日月は、欠けた月じゃない。これから満ちていく途中の月。細く見えるのは、まだ始まったばかりだから。",
+  traits:["できたことより、できなかったことを覚えている","ほめられても「でも」と打ち消してしまう","人には言わないけど、自分にはいちばん厳しい"],
+  kuse:"「まだまだです」",honne:"本当は、自分を責めたいんじゃない。「もう十分だよ」と、誰かに止めてほしいだけ。",
+  hito:"欠けてるんじゃない。<br>満ちていく途中。"}
+};
+const COMBO={
+ subaru_oborozuki:"人の機嫌を守るために、自分の希望をしまいこむ。やさしさの中に、言えなかった「本当は」がたまっている。",
+ subaru_hokkyokusei:"空気も段取りも、全部ひとりで整えている。みんなが笑っているとき、いちばん働いているのはあなた。",
+ subaru_akenomyojo:"昼に気を使った分だけ、夜にひとり反省会が始まる。思い出しているのは、自分の失敗より相手の顔。",
+ subaru_mangetsu:"みんなを安心させる笑顔の奥で、自分だけが休めていない。あたたかい人ほど、自分の寒さに気づきにくい。",
+ subaru_mikazuki:"誰かが不機嫌になると、自分のどこが悪かったのか探してしまう。気づかいの裏に、自分へのダメ出しが隠れている。",
+ oborozuki_subaru:"「どっちでもいい」は、相手が困らないようにするための言葉。選ばないことで、ずっと誰かを守ってきた。",
+ oborozuki_hokkyokusei:"断れずに引き受けて、気づけば全部抱えている。「いいよ」が積み重なって、自分の時間がなくなっていく。",
+ oborozuki_akenomyojo:"選ばなかったほうを、夜になって何度も考える。決めたあとにも、迷いが残り続ける。",
+ oborozuki_mangetsu:"「いいよ」と笑うたびに、本当の気持ちが奥にしまわれていく。合わせるのが上手すぎて、本音の出し方を忘れかけている。",
+ oborozuki_mikazuki:"希望を言えないのは、「私なんかが」と思ってしまうから。輪郭がかすんでいるのは、自信を少しずつ削られてきた跡。",
+ hokkyokusei_subaru:"誰も困らないように、先回りして全部やってしまう。気づかれないのは、あなたが上手すぎるから。",
+ hokkyokusei_oborozuki:"頼まれたことは断らず、頼まれる前からやっている。「助けて」の言い方だけ、まだ知らない。",
+ hokkyokusei_akenomyojo:"頑張った日の夜ほど、「意味あったのかな」と考えてしまう。眠る前に、明日のやることリストが止まらない。",
+ hokkyokusei_mangetsu:"平気な顔で支え続けて、「疲れた」と言うタイミングをなくしている。強く見えるのは、弱さを見せる場所がないから。",
+ hokkyokusei_mikazuki:"どれだけやっても「まだ足りない」と思ってしまう。支え続けるのは、休んだら価値がなくなる気がするから。",
+ akenomyojo_subaru:"夜に思い出すのは、自分の言葉で誰かを傷つけなかったか。人を大事にする人ほど、夜が長い。",
+ akenomyojo_oborozuki:"決められなかったことが、夜になって大きくなる。本当はどうしたかったのか、布団の中で探している。",
+ akenomyojo_hokkyokusei:"眠る前、明日のことと、今日できなかったことが交互に浮かぶ。止まると不安になるから、頭だけ働き続ける。",
+ akenomyojo_mangetsu:"昼の明るい自分と、夜の静かな自分。その差に、いちばん疲れているのはあなた自身。",
+ akenomyojo_mikazuki:"夜になると、今日の失敗が何度も再生される。考えているのは未来じゃなく、自分へのダメ出し。",
+ mangetsu_subaru:"場を明るくするのが、自分の役目だと思っている。みんなの笑顔を守るために、自分の曇りは隠している。",
+ mangetsu_oborozuki:"明るく合わせるのが上手で、「本当はどう思う？」と聞かれると言葉に詰まる。本音は、ずっと後ろの席に座っている。",
+ mangetsu_hokkyokusei:"笑顔で全部こなして、しんどさを誰にも見せない。「大丈夫そうな人」でいることに、少し疲れている。",
+ mangetsu_akenomyojo:"昼は笑って、夜はひとりで考えこむ。誰かに見せている顔と、天井を見ている顔がちがう。",
+ mangetsu_mikazuki:"明るさの裏で、こっそり自分に厳しい。「ダメな自分」を見せたら終わりだと思っている。",
+ mikazuki_subaru:"人の役に立てた日だけ、自分を少し許せる。誰かの笑顔が、あなたの合格ラインになっている。",
+ mikazuki_oborozuki:"自分の意見に自信がなくて、つい人に合わせてしまう。「私が決めたら間違う」と、どこかで思っている。",
+ mikazuki_hokkyokusei:"人の何倍も頑張っているのに、自分では「普通」だと思っている。あなたの「まだまだ」は、周りから見たら十分すぎる。",
+ mikazuki_akenomyojo:"眠る前、できなかったことを数えてしまう。数えるたびに、夜がまた少し長くなる。",
+ mikazuki_mangetsu:"弱いところを見せないのは、強いからじゃない。欠けている自分を、誰にも見せたくないから。",
+ subaru_:"すばるの性質が、まっすぐ強く出ています。誰かのための気づかいが、もう体に染みついているほど。",
+ oborozuki_:"朧月の性質が、まっすぐ強く出ています。自分を後回しにすることに、もう慣れてしまっているほど。",
+ hokkyokusei_:"北極星の性質が、まっすぐ強く出ています。支えることが当たり前になりすぎて、支えられ方を忘れているほど。",
+ akenomyojo_:"明けの明星の性質が、まっすぐ強く出ています。考えることが、もう止められない習慣になっているほど。",
+ mangetsu_:"満月の性質が、まっすぐ強く出ています。明るい自分でいることが、もうあなたの一部になっているほど。",
+ mikazuki_:"三日月の性質が、まっすぐ強く出ています。自分に厳しくすることが、もう呼吸のようになっているほど。"
+};
+// 最初の8問＝かんたん診断、全16問＝くわしい診断
+const Q=[
+ ["仕事でミスをした、帰り道。",{subaru:"「誰も怒ってないよ。安心して」",oborozuki:"「次は、あなたのやり方でやってみたら？」",hokkyokusei:"「いつもフォローしてくれてるの、知ってるよ」",akenomyojo:"「一晩寝たら、思ってるより小さなことだよ」",mangetsu:"「悔しいなら、悔しいって言っていいよ」",mikazuki:"「ひとつのミスで、あなたの全部は決まらない」"}],
+ ["友達の誘いを、断った夜。",{subaru:"「断っても、あの子はあなたを嫌いにならないよ」",oborozuki:"「行きたくないって思えたの、えらいよ」",hokkyokusei:"「たまには、あなたが休む番」",akenomyojo:"「断った理由、もう考えなくていいよ」",mangetsu:"「一人になりたい日があっても、いいんだよ」",mikazuki:"「断れた自分を、責めなくていい」"}],
+ ["誰にも気づかれないまま、一日が終わったとき。",{subaru:"「今日も周りを守ってくれて、ありがとう」",oborozuki:"「今日、自分のために何か選べた？」",hokkyokusei:"「あなたがいたから、今日が回ったんだよ」",akenomyojo:"「何もない一日も、ちゃんと前に進んでる」",mangetsu:"「静かな日のあなたも、好きだよ」",mikazuki:"「目立たなくても、今日のあなたは合格だよ」"}],
+ ["大事なことを、決めなきゃいけないとき。",{subaru:"「どっちを選んでも、離れていく人はいないよ」",oborozuki:"「あなたがどうしたいかが、いちばん大事」",hokkyokusei:"「一人で決めなくていい。一緒に考えよう」",akenomyojo:"「間違えても、やり直せるから大丈夫」",mangetsu:"「迷ってる顔、見せてくれてうれしい」",mikazuki:"「完璧な答えじゃなくていい」"}],
+ ["疲れているのに、眠れない夜。",{subaru:"「今日はもう、誰の顔も思い出さなくていい」",oborozuki:"「明日の予定、ひとつ減らしてもいいよ」",hokkyokusei:"「あなたが休んでも、世界はちゃんと回るよ」",akenomyojo:"「答えは、朝のあなたにまかせよう」",mangetsu:"「泣きたいなら、泣いてから寝よう」",mikazuki:"「今日のあなたは、もう十分やったよ」"}],
+ ["頑張ったのに、評価されなかったとき。",{subaru:"「あなたのおかげで、場がやわらかかった」",oborozuki:"「誰かの期待じゃなく、自分で満足していいよ」",hokkyokusei:"「見えないところの頑張り、ちゃんと見てたよ」",akenomyojo:"「積み上げたものは、消えたりしない」",mangetsu:"「笑ってごまかさなくていい。くやしかったね」",mikazuki:"「足りないのは評価で、あなたじゃない」"}],
+ ["ひとりで過ごした休日の、終わり。",{subaru:"「誰にも気を使わない一日、よく休めたね」",oborozuki:"「今日は、やりたいことができたね」",hokkyokusei:"「誰かのためじゃない一日、よかったね」",akenomyojo:"「明日のことは、明日考えればいい」",mangetsu:"「ひとりの時間を楽しめるあなたも、素敵だよ」",mikazuki:"「何もしなかった日にも、ちゃんと価値がある」"}],
+ ["ふと、自分のことが嫌いになったとき。",{subaru:"「人にやさしくできるあなたを、知ってるよ」",oborozuki:"「あなたの好き嫌いを、大事にしていい」",hokkyokusei:"「あなたは、ちゃんと頑張ってきた人だよ」",akenomyojo:"「嫌いになる夜は、疲れているだけ」",mangetsu:"「隠している部分ごと、あなたでいい」",mikazuki:"「欠けてるんじゃない。満ちていく途中だよ」"}],
+ ["家族と話していて、少しモヤモヤしたとき。",{subaru:"「家族の機嫌まで、背負わなくていい」",oborozuki:"「家族でも、ちがう意見でいいんだよ」",hokkyokusei:"「いつも家のこと、ありがとう」",akenomyojo:"「昔のことまで、思い出さなくていいよ」",mangetsu:"「家族の前でも、いい子でいなくていい」",mikazuki:"「期待どおりじゃなくても、あなたは十分」"}],
+ ["好きな人から、返信が来ないとき。",{subaru:"「相手の気持ちまで、先回りしなくていい」",oborozuki:"「会いたいなら、会いたいって言っていい」",hokkyokusei:"「あなたばかりが頑張る恋じゃなくていい」",akenomyojo:"「既読の数で、不安を数えなくていい」",mangetsu:"「さみしいって、言ってもいいんだよ」",mikazuki:"「返信が遅いのは、あなたに魅力がないからじゃない」"}],
+ ["SNSで、友達の楽しそうな投稿を見たとき。",{subaru:"「誘われなかったのは、あなたのせいじゃない」",oborozuki:"「あなたは、あなたの楽しいを選べばいい」",hokkyokusei:"「あなたの毎日にも、ちゃんと意味がある」",akenomyojo:"「比べるのは、今日はもうおしまい」",mangetsu:"「キラキラしてない日も、そのままでいい」",mikazuki:"「あの人のいちばんいい日と、比べなくていい」"}],
+ ["体調をくずして、予定をキャンセルしたとき。",{subaru:"「迷惑だなんて、誰も思ってないよ」",oborozuki:"「自分の体を選べて、よかった」",hokkyokusei:"「あなたの分は、今日は誰かがやるよ」",akenomyojo:"「治ってから考えれば、ちゃんと間に合うよ」",mangetsu:"「元気なふり、今日はしなくていいよ」",mikazuki:"「休んだことを、反省しなくていい」"}],
+ ["新しい場所で、まだなじめないとき。",{subaru:"「空気を読まなくても、ここにいていい」",oborozuki:"「合わせるより、あなたらしくいていい」",hokkyokusei:"「最初から役に立とうとしなくていい」",akenomyojo:"「なじむのに時間がかかるのは、普通のこと」",mangetsu:"「無理に明るくしなくても、ちゃんと伝わる」",mikazuki:"「できないことがあって、当たり前の時期だよ」"}],
+ ["誰かに、頼みごとをされたとき。",{subaru:"「断っても、関係は変わらないよ」",oborozuki:"「できないって、言ってもいいんだよ」",hokkyokusei:"「あなたばかりが、引き受けなくていい」",akenomyojo:"「すぐに返事しなくても、大丈夫」",mangetsu:"「笑顔で引き受けなくても、いいよ」",mikazuki:"「全部を完璧にこなさなくていい」"}],
+ ["誰かに、ほめられたとき。",{subaru:"「あなたがいると、みんなが楽になるんだよ」",oborozuki:"「それは、あなたが選んだから生まれたものだよ」",hokkyokusei:"「ずっと前から、気づいてたよ」",akenomyojo:"「その言葉、今夜思い出しながら眠ってね」",mangetsu:"「照れずに、そのまま喜んでいいよ」",mikazuki:"「『でも』をつけずに、受け取っていいよ」"}],
+ ["一年の終わりに、誰かからひとことだけもらえるなら。",{subaru:"「今年も、たくさんの人をあたためたね」",oborozuki:"「来年は、あなたの好きを増やそう」",hokkyokusei:"「今年いちばん頑張ったのは、あなただよ」",akenomyojo:"「迷いながらでも、ちゃんとここまで来たね」",mangetsu:"「来年は、素のあなたにもっと会いたい」",mikazuki:"「足りなかったことより、できたことを数えよう」"}]
+];
+
+let mode="quick", qs=[], i=0, answers=[], shuffled=[], res=null;
+const FROM=(new URLSearchParams(location.search).get("from")||"direct").slice(0,30);
+const $=id=>document.getElementById(id);
+function show(id){const d=id==='result';document.body.classList.toggle('dark',d);document.documentElement.classList.toggle('dark',d);document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));$(id).classList.add('on');window.scrollTo(0,0)}
+function shuffle(a){a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]]}return a}
+function begin(m){mode=m;qs=m==='quick'?Q.slice(0,8):Q;i=0;answers=[];shuffled=qs.map(()=>shuffle(ORDER));show('quiz');renderQ()}
+function renderQ(){
+  const [scene,opts]=qs[i];
+  $('count').textContent=`${mode==='quick'?'かんたん診断':'くわしい診断'}　${i+1} ／ ${qs.length}`;
+  $('bar').style.width=(i/qs.length*100)+'%';
+  $('scene').textContent=scene;
+  $('opts').innerHTML='';
+  shuffled[i].forEach(k=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=opts[k];
+    if(answers[i]===k)b.classList.add('picked');
+    b.onclick=()=>{b.classList.add('picked');answers[i]=k;setTimeout(next,220)};
+    $('opts').appendChild(b);
+  });
+  $('backBtn').style.visibility=i===0?'hidden':'visible';
+}
+function next(){if(i<qs.length-1){i++;renderQ()}else finish()}
+function back(){if(i>0){i--;renderQ()}}
+function lastPick(cands){for(let k=answers.length-1;k>=0;k--){if(cands.includes(answers[k]))return answers[k]}return cands[0]}
+function finish(){
+  const s={};ORDER.forEach(k=>s[k]=0);answers.forEach(k=>s[k]++);
+  const max=Math.max(...Object.values(s));
+  const main=lastPick(ORDER.filter(k=>s[k]===max));
+  let sub="";
+  if(mode==='deep'){
+    const rest=ORDER.filter(k=>k!==main);const m2=Math.max(...rest.map(k=>s[k]));
+    if(m2>0)sub=lastPick(rest.filter(k=>s[k]===m2));
+  }
+  res={main,sub,scores:s};
+  log();renderResult(main,sub);
+}
+function renderResult(main,sub){
+  const t=TYPES[main];
+  $('rname').textContent=t.name;$('rread').textContent=t.read?t.read:'';$('ricon').innerHTML=ICON[main];$('whyTitle').textContent=`なぜ「${t.name}」なのか`;$('rwhy').textContent=t.why;
+  $('rsub').innerHTML=mode==='deep'&&res&&res.main===main?(sub?`こころの影：<b>${TYPES[sub].name}</b>`:`こころの影：<b>なし（まっすぐ型）</b>`):'';
+  $('rcatch').innerHTML=t.catch;
+  const showCombo=mode==='deep'&&res&&res.main===main;
+  $('comboCard').style.display=showCombo?'block':'none';
+  if(showCombo){$('comboTitle').textContent=sub?`${t.name} × ${TYPES[sub].name}のあなた`:`まっすぐな${t.name}のあなた`;$('comboText').textContent=COMBO[main+'_'+sub]}
+  $('rtraits').innerHTML=t.traits.map(x=>`<li>${x}</li>`).join('');
+  $('rkuse').textContent=t.kuse;$('rhonne').textContent=t.honne;$('rhito').innerHTML=t.hito;
+  const comboUrl=showCombo?COMBO_URLS[main+'_'+sub]:"";
+  const url=comboUrl||LETTER_URLS[main]||NOTE_TOP_URL;
+  const btn=$('letterBtn');
+  if(url){btn.href=url;btn.textContent=comboUrl?`${t.name}×${sub?TYPES[sub].name:'まっすぐ'}のあなたへの手紙を読む`:`${t.name}のあなたに宛てた手紙を読む`;btn.style.opacity=1;btn.style.pointerEvents='auto';$('letterNote').textContent='noteで、このタイプのあなただけに宛てた手紙を書いています。'}
+  else{btn.removeAttribute('href');btn.textContent=`${t.name}のあなたへの手紙は、準備中です`;btn.style.opacity=.55;btn.style.pointerEvents='none';$('letterNote').textContent='noteで「こころにひとこと」と検索すると、届いたときに読めます。'}
+  $('deepBtn').style.display=mode==='quick'&&res&&res.main===main?'block':'none';
+  $('types').innerHTML=ORDER.map(x=>`<button onclick="renderResult('${x}','')"><b>${TYPES[x].name}</b><br>${TYPES[x].catch.replace('<br>','')}</button>`).join('');
+  $('types').style.display='none';
+  show('result');
+}
+function log(){
+  if(!LOG_URL)return;
+  const data={mode,main:res.main,sub:res.sub,from:FROM,answers:answers.join(','),scores:ORDER.map(k=>res.scores[k]).join(',')};
+  try{fetch(LOG_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)}).catch(()=>{})}catch(e){}
+}
+function toggleTypes(){const el=$('types');el.style.display=el.style.display==='none'?'grid':'none'}
+function restart(){res=null;show('start')}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1800)}
+function copyShare(){
+  if(!res)return;const t=TYPES[res.main];
+  const s=res.sub?`（こころの影：${TYPES[res.sub].name}）`:'';
+  const txt=`私のこころは「${t.name}」${s}でした。\n${t.catch.replace('<br>','')}\n#こころにひとこと #こころのタイプ診断`;
+  try{navigator.clipboard.writeText(txt).then(()=>toast('コピーしました'),()=>toast('コピーできませんでした'))}catch(e){toast('コピーできませんでした')}
+}
+</script>
+</body>
+</html>

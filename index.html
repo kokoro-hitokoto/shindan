@@ -4,92 +4,158 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>こころのタイプ診断｜こころにひとこと</title>
-<meta name="description" content="こんなとき、どんな言葉をかけられたい？ 選んだ言葉から、あなたのこころのタイプがわかります。">
+<meta name="description" content="こんなとき、どんな言葉をかけられたい？ 選んだ言葉から、あなたのこころを月と星にたとえて映します。">
+<meta name="theme-color" content="#0E1220">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Shippori+Mincho+B1:wght@600;700&display=swap">
 <style>
-:root{--bg:#F3EEE5;--ink:#2A2520;--sub:#6E6458;--ac:#B5775A;--navy:#1B2233;--cream:#EDE6D6;--gold:#C9A96E;--line:#E2D9CA}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Shippori Mincho','Noto Serif JP','Hiragino Mincho ProN','Yu Mincho',serif;-webkit-font-smoothing:antialiased}
-.wrap{max-width:560px;margin:0 auto;padding:28px 22px 60px;min-height:100vh;display:flex;flex-direction:column}
-.brand{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.3em;color:var(--sub)}
-.brand svg{width:26px;height:26px}
-.view{display:none;flex:1;flex-direction:column}
+:root{
+  --bg0:#0B0F1C;--bg1:#121933;--bg2:#241F45;
+  --ink:#F1ECE2;--sub:#A9A6BC;--dim:#6F6E86;
+  --gold:#E2C287;--gold2:#F6E3B4;--lav:#B9AEE8;
+  --glass:rgba(255,255,255,.055);--glass2:rgba(255,255,255,.09);--line:rgba(255,255,255,.11);
+  --sans:'Zen Kaku Gothic New','Hiragino Sans','Noto Sans JP',sans-serif;
+  --serif:'Shippori Mincho B1','Hiragino Mincho ProN',serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;background:var(--bg0)}
+#sky{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+  background:radial-gradient(120% 70% at 80% -10%,#3A2F6B 0%,transparent 55%),radial-gradient(90% 60% at -10% 110%,#1D3550 0%,transparent 60%),linear-gradient(180deg,var(--bg0),var(--bg1) 55%,var(--bg2))}
+#sky i{position:absolute;border-radius:50%;background:#fff;animation:tw 4s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}
+.wrap{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:26px 22px 64px;min-height:100vh;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:9px;font-size:12px;letter-spacing:.32em;color:var(--sub)}
+.brand svg{width:22px;height:22px}
+.view{display:none;flex:1;flex-direction:column;animation:fade .6s ease both}
 .view.on{display:flex}
-h1{font-size:30px;line-height:1.7;letter-spacing:.06em;margin:50px 0 18px;font-weight:700}
-p.lead{font-size:16px;line-height:2.1;margin:0 0 12px}
-.small{font-size:13px;color:var(--sub);line-height:1.9}
-.btn{display:block;width:100%;border:none;border-radius:999px;padding:17px 20px;font:inherit;font-size:16px;letter-spacing:.12em;cursor:pointer;text-align:center;text-decoration:none;transition:opacity .2s}
-.btn:active{opacity:.75}
-.primary{background:var(--navy);color:var(--cream)}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* start */
+.hero{position:relative;height:210px;margin:18px 0 6px;display:flex;align-items:center;justify-content:center}
+.moon{width:118px;height:118px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFF6DD,#E9CF97 55%,#C9A665);box-shadow:0 0 60px 10px rgba(226,194,135,.28),0 0 140px 40px rgba(185,174,232,.12);animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.orbit{position:absolute;inset:0;animation:spin 60s linear infinite}
+.orbit span{position:absolute;width:30px;height:30px;opacity:.85}
+.orbit span svg{width:100%;height:100%}
+@keyframes spin{to{transform:rotate(360deg)}}
+.eyebrow{font-size:12px;letter-spacing:.35em;color:var(--gold);text-align:center;margin-top:10px}
+h1{font-family:var(--serif);font-size:30px;line-height:1.5;letter-spacing:.08em;text-align:center;margin:8px 0 18px;font-weight:700}
+.lead{font-size:15px;line-height:2;color:var(--ink);text-align:center;margin:0 0 6px}
+.small{font-size:12px;color:var(--sub);line-height:1.9;text-align:center;margin:10px 0 0}
+.spacer{flex:1;min-height:26px}
+.mode{position:relative;display:flex;align-items:center;gap:14px;width:100%;text-align:left;border-radius:20px;padding:18px 18px;margin:0 0 12px;font:inherit;cursor:pointer;color:var(--ink);
+  background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:transform .2s,border-color .2s,background .2s}
+.mode:hover{border-color:rgba(226,194,135,.5);background:var(--glass2)}
+.mode:active{transform:scale(.985)}
+.mode.deep{background:linear-gradient(135deg,rgba(226,194,135,.18),rgba(185,174,232,.14));border-color:rgba(226,194,135,.45)}
+.mode .ic{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.06)}
+.mode .ic svg{width:26px;height:26px}
+.mode b{display:block;font-size:16px;font-weight:700;letter-spacing:.08em;margin-bottom:3px}
+.mode span.d{font-size:12px;color:var(--sub);line-height:1.7}
+.mode .tag{position:absolute;top:-9px;right:14px;font-size:10px;letter-spacing:.15em;padding:3px 9px;border-radius:999px;background:var(--gold);color:#1A1530;font-weight:700}
+
+/* quiz */
+.qtop{display:flex;align-items:center;justify-content:space-between;margin:26px 0 10px}
+.count{font-size:12px;letter-spacing:.18em;color:var(--sub)}
+.count b{color:var(--gold);font-weight:700}
+.progress{height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-bottom:26px}
+.progress i{display:block;height:100%;width:0;border-radius:4px;background:linear-gradient(90deg,var(--lav),var(--gold));box-shadow:0 0 12px rgba(226,194,135,.6);transition:width .45s ease}
+.scenecard{padding:22px 20px;border-radius:22px;background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:1px solid var(--line);margin-bottom:18px}
+.scene{font-family:var(--serif);font-size:21px;line-height:1.7;font-weight:700;letter-spacing:.04em}
+.ask{font-size:12px;color:var(--gold);letter-spacing:.2em;margin-top:10px}
+#opts{animation:fade .45s ease both}
+.opt{display:block;width:100%;text-align:left;border-radius:16px;padding:15px 18px;margin:0 0 10px;font:inherit;font-size:15px;line-height:1.75;color:var(--ink);cursor:pointer;
+  background:var(--glass);border:1px solid var(--line);transition:background .2s,border-color .2s,transform .15s,box-shadow .2s}
+.opt:hover{border-color:rgba(226,194,135,.55);background:var(--glass2)}
+.opt:active{transform:scale(.985)}
+.opt.picked{background:linear-gradient(135deg,rgba(226,194,135,.32),rgba(185,174,232,.22));border-color:var(--gold);box-shadow:0 0 22px rgba(226,194,135,.25)}
+.back{background:none;border:none;font:inherit;color:var(--sub);font-size:12px;letter-spacing:.15em;padding:8px 0;cursor:pointer;align-self:flex-start;margin-top:6px}
+
+/* loading */
+#loading{align-items:center;justify-content:center;text-align:center}
+.ring{width:90px;height:90px;border-radius:50%;border:1px solid rgba(226,194,135,.25);border-top-color:var(--gold);animation:spin 1.4s linear infinite;margin:0 auto 26px;box-shadow:0 0 40px rgba(226,194,135,.15)}
+.loadtxt{font-family:var(--serif);font-size:17px;letter-spacing:.12em;line-height:2}
+
+/* result */
+.rcard{position:relative;margin:22px 0 18px;padding:30px 22px 26px;border-radius:28px;text-align:center;overflow:hidden;
+  background:linear-gradient(170deg,rgba(255,255,255,.10),rgba(255,255,255,.03));border:1px solid rgba(226,194,135,.38);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.rcard:before{content:"";position:absolute;inset:-40% -20% auto;height:70%;background:radial-gradient(circle,rgba(226,194,135,.22),transparent 65%);pointer-events:none}
+.ricon{position:relative;width:92px;height:92px;margin:0 auto 6px;filter:drop-shadow(0 0 18px rgba(226,194,135,.55));animation:pop .9s cubic-bezier(.2,.9,.3,1.3) both}
+.ricon svg{width:100%;height:100%}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.rlabel{font-size:11px;letter-spacing:.35em;color:var(--sub);margin:6px 0 4px}
+.rname{font-family:var(--serif);font-size:44px;letter-spacing:.14em;font-weight:700;margin:0;background:linear-gradient(180deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.rread{font-size:11px;letter-spacing:.35em;color:var(--sub);min-height:1em;margin:2px 0 0}
+.rsub{display:inline-block;font-size:12px;letter-spacing:.12em;color:var(--ink);margin-top:12px;padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05)}
+.rsub:empty{display:none}
+.rsub b{color:var(--gold);font-weight:700}
+.rcatch{font-family:var(--serif);font-size:18px;line-height:1.9;margin:18px 0 0;letter-spacing:.04em}
+.rcard .mark{position:relative;margin-top:18px;font-size:10px;letter-spacing:.3em;color:var(--dim)}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:20px;padding:18px 18px;margin:0 0 12px}
+.card h3{margin:0 0 10px;font-size:11px;letter-spacing:.28em;color:var(--gold);font-weight:700}
+.card ul{margin:0;padding-left:1.1em;line-height:2;font-size:14px}
+.card p{margin:0;font-size:14px;line-height:2}
+.combo{background:linear-gradient(135deg,rgba(185,174,232,.14),rgba(226,194,135,.10));border-color:rgba(185,174,232,.4)}
+.hito{font-family:var(--serif);font-size:20px;line-height:2;text-align:center;margin:26px 0;letter-spacing:.06em;color:var(--gold2)}
+.btn{display:block;width:100%;border:none;border-radius:999px;padding:16px 20px;font:inherit;font-size:15px;font-weight:500;letter-spacing:.1em;cursor:pointer;text-align:center;text-decoration:none;transition:transform .15s,opacity .2s}
+.btn:active{transform:scale(.985)}
+.gold{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1A1530;font-weight:700;box-shadow:0 8px 28px rgba(226,194,135,.3)}
+.soft{background:linear-gradient(135deg,rgba(185,174,232,.25),rgba(226,194,135,.18));color:var(--ink);border:1px solid rgba(226,194,135,.4)}
 .ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
-.gold{background:var(--gold);color:var(--navy);font-weight:700}
-.spacer{flex:1;min-height:30px}
-.mode{display:block;width:100%;text-align:left;border-radius:16px;padding:18px 20px;margin:0 0 12px;font:inherit;cursor:pointer;border:1px solid var(--line);background:#FBF8F2;color:var(--ink)}
-.mode.deep{background:var(--navy);color:var(--cream);border-color:var(--navy)}
-.mode b{display:block;font-size:17px;letter-spacing:.1em;margin-bottom:4px}
-.mode span{font-size:13px;opacity:.8;line-height:1.8}
-.progress{height:3px;background:var(--line);border-radius:3px;margin:30px 0 8px;overflow:hidden}
-.progress i{display:block;height:100%;background:var(--ac);width:0;transition:width .35s}
-.count{font-size:12px;letter-spacing:.2em;color:var(--sub)}
-.scene{font-size:20px;line-height:1.8;margin:22px 0 6px;font-weight:700;letter-spacing:.04em}
-.ask{font-size:13px;color:var(--sub);letter-spacing:.12em;margin:0 0 20px}
-.opt{display:block;width:100%;text-align:left;background:#FBF8F2;border:1px solid var(--line);border-radius:14px;padding:15px 18px;margin:0 0 10px;font:inherit;font-size:16px;line-height:1.75;color:var(--ink);cursor:pointer;transition:background .15s,border-color .15s}
-.opt:hover{border-color:var(--ac)}
-.opt.picked{background:var(--navy);color:var(--cream);border-color:var(--navy)}
-.back{background:none;border:none;font:inherit;color:var(--sub);font-size:13px;letter-spacing:.15em;padding:8px 0;cursor:pointer;align-self:flex-start;margin-top:8px}
-body.dark,html.dark{background:var(--navy)}body.dark .wrap>.brand{display:none}#result{color:var(--cream)}
-#result .brand{color:#C9C2B3}
-.rlabel{font-size:13px;letter-spacing:.3em;color:var(--gold);margin:44px 0 6px}
-.rname{font-size:42px;letter-spacing:.12em;margin:0;font-weight:700}.rread{font-size:13px;letter-spacing:.3em;color:#C9C2B3;min-height:1em;margin:2px 0 6px}.ricon{width:76px;height:76px;margin:40px 0 -24px}.ricon svg{width:100%;height:100%}.why p{font-size:15px}
-.rsub{font-size:15px;letter-spacing:.12em;color:#C9C2B3;margin:4px 0 0}
-.rsub b{color:var(--gold);font-weight:500}
-.rcatch{font-size:18px;line-height:1.9;margin:16px 0 26px}
-.card{background:rgba(255,255,255,.05);border:1px solid rgba(201,169,110,.35);border-radius:16px;padding:18px;margin:0 0 14px}
-.card h3{margin:0 0 10px;font-size:13px;letter-spacing:.25em;color:var(--gold);font-weight:500}
-.card ul{margin:0;padding-left:1.1em;line-height:2;font-size:15px}
-.card p{margin:0;font-size:15px;line-height:2}
-.combo{border-color:var(--gold);background:rgba(201,169,110,.08)}
-.hito{font-size:20px;line-height:2;text-align:center;margin:30px 0;letter-spacing:.06em}
-#result .ghost{color:var(--cream);border-color:rgba(237,230,214,.3)}
 .stack>*{margin-bottom:12px}
-.note{font-size:12px;color:#C9C2B3;text-align:center;line-height:1.8;margin-top:-4px}
-.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none}
-.toast.on{opacity:.92}
-.types{display:grid;gap:10px;margin:0 0 20px}
-.types button{text-align:left;background:rgba(255,255,255,.04);border:1px solid rgba(237,230,214,.18);border-radius:12px;color:var(--cream);font:inherit;padding:12px 14px;cursor:pointer;line-height:1.7}
-.types b{color:var(--gold);letter-spacing:.1em}
+.note{font-size:11px;color:var(--sub);text-align:center;line-height:1.8;margin-top:-4px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:rgba(20,18,40,.95);border:1px solid var(--line);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:5}
+.toast.on{opacity:1}
+.types{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 16px}
+.types button{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;background:var(--glass);border:1px solid var(--line);border-radius:16px;color:var(--ink);font:inherit;padding:14px 10px;cursor:pointer;line-height:1.5}
+.types button svg{width:34px;height:34px}
+.types b{font-family:var(--serif);color:var(--gold);letter-spacing:.1em;font-size:16px}
+.types small{font-size:11px;color:var(--sub)}
+.foot{margin-top:28px;text-align:center;font-size:10px;letter-spacing:.3em;color:var(--dim)}
 </style>
 </head>
 <body>
+<div id="sky"></div>
 <div class="wrap">
-  <div class="brand"><svg viewBox="0 0 48 48" fill="none"><path d="M10 7h28a6 6 0 0 1 6 6v15a6 6 0 0 1-6 6H22l-8 7v-7h-4a6 6 0 0 1-6-6V13a6 6 0 0 1 6-6z" stroke="#B5775A" stroke-width="2.5" stroke-linejoin="round"/><circle cx="24" cy="20.5" r="4" fill="#B5775A"/></svg>こころにひとこと</div>
+  <div class="brand"><svg viewBox="0 0 48 48" fill="none"><path d="M10 7h28a6 6 0 0 1 6 6v15a6 6 0 0 1-6 6H22l-8 7v-7h-4a6 6 0 0 1-6-6V13a6 6 0 0 1 6-6z" stroke="#E2C287" stroke-width="2.5" stroke-linejoin="round"/><circle cx="24" cy="20.5" r="4" fill="#E2C287"/></svg>こころにひとこと</div>
 
   <section class="view on" id="start">
+    <div class="hero"><div class="orbit" id="orbit"></div><div class="moon"></div></div>
+    <div class="eyebrow">KOKORO TYPE</div>
     <h1>こころのタイプ診断</h1>
-    <p class="lead">こんなとき、あなたは<br>どんな言葉をかけられたいですか。</p>
-    <p class="lead">ほしい言葉には、あなたのこころの形が出ます。<br>月や星にたとえて、あなたのこころを映します。<br>いちばん近いものを、選んでみてください。</p>
-    <p class="small">正解はありません。考えすぎず、読んだ瞬間に「これがほしい」と思った言葉を。</p>
+    <p class="lead">こんなとき、あなたは<br>どんな言葉をかけられたい？</p>
+    <p class="lead">ほしい言葉には、こころの形が出る。<br>あなたのこころを、月と星に映します。</p>
+    <p class="small">正解はありません。読んだ瞬間に「これがほしい」と思った言葉を。</p>
     <div class="spacer"></div>
-    <button class="mode" onclick="begin('quick')"><b>かんたん診断</b><span>8つの場面・約1分／6つのタイプから、あなたのタイプがわかる</span></button>
-    <button class="mode deep" onclick="begin('deep')"><b>くわしい診断</b><span>かんたん診断とはちがう16の場面・約3分／タイプに加えて「こころの影」までわかる。全36通り</span></button>
+    <button class="mode" onclick="begin('quick')"><div class="ic"><svg viewBox="0 0 64 64"><path d="M40 12 A20 20 0 1 0 40 52 A16 20 0 1 1 40 12 Z" fill="#E2C287"/></svg></div><div><b>かんたん診断</b><span class="d">8つの場面・約1分｜6つのタイプからあなたを映す</span></div></button>
+    <button class="mode deep" onclick="begin('deep')"><span class="tag">36通り</span><div class="ic"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="16" fill="#E2C287"/><path d="M50 12 L51.5 17 L56 18.5 L51.5 20 L50 25 L48.5 20 L44 18.5 L48.5 17 Z" fill="#F6E3B4"/></svg></div><div><b>くわしい診断</b><span class="d">かんたん診断とはちがう16の場面・約3分｜「こころの影」までわかる</span></div></button>
+    <div class="foot">© こころにひとこと</div>
   </section>
 
   <section class="view" id="quiz">
+    <div class="qtop"><div class="count" id="count"></div></div>
     <div class="progress"><i id="bar"></i></div>
-    <div class="count" id="count"></div>
-    <div class="scene" id="scene"></div>
-    <div class="ask">どんな言葉を、かけられたい？</div>
+    <div class="scenecard"><div class="scene" id="scene"></div><div class="ask">どんな言葉を、かけられたい？</div></div>
     <div id="opts"></div>
     <button class="back" id="backBtn" onclick="back()">← ひとつ前へ</button>
   </section>
 
+  <section class="view" id="loading">
+    <div class="ring"></div>
+    <div class="loadtxt">あなたのこころを<br>夜空に映しています…</div>
+  </section>
+
   <section class="view" id="result">
-    <div class="brand"><svg viewBox="0 0 48 48" fill="none"><path d="M10 7h28a6 6 0 0 1 6 6v15a6 6 0 0 1-6 6H22l-8 7v-7h-4a6 6 0 0 1-6-6V13a6 6 0 0 1 6-6z" stroke="#C9A96E" stroke-width="2.5" stroke-linejoin="round"/><circle cx="24" cy="20.5" r="4" fill="#C9A96E"/></svg>こころにひとこと</div>
-    <div class="ricon" id="ricon"></div><div class="rlabel">あなたのこころのタイプは</div>
-    <div class="rname" id="rname"></div><div class="rread" id="rread"></div>
-    <div class="rsub" id="rsub"></div>
-    <div class="rcatch" id="rcatch"></div>
+    <div class="rcard">
+      <div class="ricon" id="ricon"></div>
+      <div class="rlabel">あなたのこころは</div>
+      <div class="rname" id="rname"></div>
+      <div class="rread" id="rread"></div>
+      <div class="rsub" id="rsub"></div>
+      <div class="rcatch" id="rcatch"></div>
+      <div class="mark">こころにひとこと ｜ こころのタイプ診断</div>
+    </div>
     <div class="card why"><h3 id="whyTitle"></h3><p id="rwhy"></p></div>
     <div class="card combo" id="comboCard" style="display:none"><h3 id="comboTitle"></h3><p id="comboText"></p></div>
     <div class="card"><h3>こんなところ、ありませんか</h3><ul id="rtraits"></ul></div>
@@ -99,16 +165,16 @@ body.dark,html.dark{background:var(--navy)}body.dark .wrap>.brand{display:none}#
     <div class="stack">
       <a class="btn gold" id="letterBtn">あなたに宛てた手紙を読む</a>
       <div class="note" id="letterNote"></div>
-      <button class="btn primary" id="deepBtn" onclick="begin('deep')" style="background:var(--cream);color:var(--navy)">くわしい診断（ちがう16の場面）で「こころの影」も見る</button>
+      <button class="btn soft" id="deepBtn" onclick="begin('deep')">くわしい診断（ちがう16の場面）で「こころの影」も見る</button>
       <button class="btn ghost" onclick="copyShare()">結果をコピーしてシェアする</button>
       <button class="btn ghost" onclick="toggleTypes()">ほかのタイプも見る</button>
       <div class="types" id="types" style="display:none"></div>
       <button class="btn ghost" onclick="restart()">最初にもどる</button>
     </div>
+    <div class="foot">© こころにひとこと</div>
   </section>
 </div>
 <div class="toast" id="toast"></div>
-
 <script>
 /* ================= 設定（ここだけ書き換えればOK） ================= */
 // 集計用：Google Apps ScriptのウェブアプリURL（空なら送信しない）
@@ -123,12 +189,12 @@ const NOTE_TOP_URL = "";
 
 const ORDER=["subaru","oborozuki","hokkyokusei","akenomyojo","mangetsu","mikazuki"];
 const ICON={
- subaru:'<svg viewBox="0 0 64 64"><g fill="#C9A96E"><circle cx="22" cy="20" r="3.2"/><circle cx="34" cy="16" r="2.4"/><circle cx="42" cy="26" r="3"/><circle cx="28" cy="31" r="2.6"/><circle cx="18" cy="38" r="2.2"/><circle cx="38" cy="40" r="2.8"/><circle cx="48" cy="34" r="1.8"/></g></svg>',
- oborozuki:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="22" fill="#C9A96E" opacity=".12"/><circle cx="32" cy="32" r="16" fill="#C9A96E" opacity=".25"/><circle cx="32" cy="32" r="12" fill="#C9A96E" opacity=".75"/></svg>',
- hokkyokusei:'<svg viewBox="0 0 64 64"><path d="M32 10 L35 29 L54 32 L35 35 L32 54 L29 35 L10 32 L29 29 Z" fill="#C9A96E"/><circle cx="32" cy="32" r="3" fill="#1B2233"/></svg>',
- akenomyojo:'<svg viewBox="0 0 64 64"><path d="M6 48 H58" stroke="#C9A96E" stroke-width="1.5" opacity=".6"/><path d="M14 48 A18 10 0 0 1 50 48" fill="#C9A96E" opacity=".18"/><path d="M40 14 L42 22 L50 24 L42 26 L40 34 L38 26 L30 24 L38 22 Z" fill="#C9A96E"/></svg>',
- mangetsu:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="18" fill="#C9A96E"/><circle cx="26" cy="27" r="3" fill="#1B2233" opacity=".12"/><circle cx="37" cy="37" r="4" fill="#1B2233" opacity=".1"/></svg>',
- mikazuki:'<svg viewBox="0 0 64 64"><path d="M40 12 A20 20 0 1 0 40 52 A16 20 0 1 1 40 12 Z" fill="#C9A96E"/></svg>'
+ subaru:'<svg viewBox="0 0 64 64"><g fill="#E2C287"><circle cx="22" cy="20" r="3.2"/><circle cx="34" cy="16" r="2.4"/><circle cx="42" cy="26" r="3"/><circle cx="28" cy="31" r="2.6"/><circle cx="18" cy="38" r="2.2"/><circle cx="38" cy="40" r="2.8"/><circle cx="48" cy="34" r="1.8"/></g></svg>',
+ oborozuki:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="22" fill="#E2C287" opacity=".12"/><circle cx="32" cy="32" r="16" fill="#E2C287" opacity=".25"/><circle cx="32" cy="32" r="12" fill="#E2C287" opacity=".75"/></svg>',
+ hokkyokusei:'<svg viewBox="0 0 64 64"><path d="M32 10 L35 29 L54 32 L35 35 L32 54 L29 35 L10 32 L29 29 Z" fill="#E2C287"/><circle cx="32" cy="32" r="3" fill="#121933"/></svg>',
+ akenomyojo:'<svg viewBox="0 0 64 64"><path d="M6 48 H58" stroke="#E2C287" stroke-width="1.5" opacity=".6"/><path d="M14 48 A18 10 0 0 1 50 48" fill="#E2C287" opacity=".18"/><path d="M40 14 L42 22 L50 24 L42 26 L40 34 L38 26 L30 24 L38 22 Z" fill="#E2C287"/></svg>',
+ mangetsu:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="18" fill="#E2C287"/><circle cx="26" cy="27" r="3" fill="#121933" opacity=".12"/><circle cx="37" cy="37" r="4" fill="#121933" opacity=".1"/></svg>',
+ mikazuki:'<svg viewBox="0 0 64 64"><path d="M40 12 A20 20 0 1 0 40 52 A16 20 0 1 1 40 12 Z" fill="#E2C287"/></svg>'
 };
 const TYPES={
  subaru:{name:"すばる",read:"",catch:"人の輪の中でしか、<br>自分の光り方がわからない人。",
@@ -237,7 +303,7 @@ function shuffle(a){a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor
 function begin(m){mode=m;qs=m==='quick'?Q_QUICK:Q_DEEP;i=0;answers=[];shuffled=qs.map(()=>shuffle(ORDER));show('quiz');renderQ()}
 function renderQ(){
   const [scene,opts]=qs[i];
-  $('count').textContent=`${mode==='quick'?'かんたん診断':'くわしい診断'}　${i+1} ／ ${qs.length}`;
+  $('count').innerHTML=`${mode==='quick'?'かんたん診断':'くわしい診断'}　<b>${i+1}</b> / ${qs.length}`;
   $('bar').style.width=(i/qs.length*100)+'%';
   $('scene').textContent=scene;
   $('opts').innerHTML='';
@@ -262,7 +328,7 @@ function finish(){
     if(m2>0)sub=lastPick(rest.filter(k=>s[k]===m2));
   }
   res={main,sub,scores:s};
-  log();renderResult(main,sub);
+  log();show('loading');setTimeout(()=>renderResult(main,sub),1700);
 }
 function renderResult(main,sub){
   const t=TYPES[main];
@@ -280,7 +346,7 @@ function renderResult(main,sub){
   if(url){btn.href=url;btn.textContent=comboUrl?`${t.name}×${sub?TYPES[sub].name:'まっすぐ'}のあなたへの手紙を読む`:`${t.name}のあなたに宛てた手紙を読む`;btn.style.opacity=1;btn.style.pointerEvents='auto';$('letterNote').textContent='noteで、このタイプのあなただけに宛てた手紙を書いています。'}
   else{btn.removeAttribute('href');btn.textContent=`${t.name}のあなたへの手紙は、準備中です`;btn.style.opacity=.55;btn.style.pointerEvents='none';$('letterNote').textContent='noteで「こころにひとこと」と検索すると、届いたときに読めます。'}
   $('deepBtn').style.display=mode==='quick'&&res&&res.main===main?'block':'none';
-  $('types').innerHTML=ORDER.map(x=>`<button onclick="renderResult('${x}','')"><b>${TYPES[x].name}</b><br>${TYPES[x].catch.replace('<br>','')}</button>`).join('');
+  $('types').innerHTML=ORDER.map(x=>`<button onclick="renderResult('${x}','')">${ICON[x]}<b>${TYPES[x].name}</b><small>${TYPES[x].catch.replace('<br>','')}</small></button>`).join('');
   $('types').style.display='none';
   show('result');
 }
@@ -298,6 +364,15 @@ function copyShare(){
   const txt=`私のこころは「${t.name}」${s}でした。\n${t.catch.replace('<br>','')}\n#こころにひとこと #こころのタイプ診断`;
   try{navigator.clipboard.writeText(txt).then(()=>toast('コピーしました'),()=>toast('コピーできませんでした'))}catch(e){toast('コピーできませんでした')}
 }
+
+// 星空と、6つのタイプの軌道
+(function(){
+  const sky=document.getElementById('sky');let h='';
+  for(let k=0;k<70;k++){const z=Math.random()*1.8+.6;h+=`<i style="left:${Math.random()*100}%;top:${Math.random()*100}%;width:${z}px;height:${z}px;animation-delay:${(Math.random()*4).toFixed(2)}s;animation-duration:${(3+Math.random()*4).toFixed(2)}s"></i>`}
+  sky.innerHTML=h;
+  const o=document.getElementById('orbit');
+  o.innerHTML=ORDER.map((k,n)=>{const a=n/ORDER.length*Math.PI*2-Math.PI/2;const r=92;return `<span style="left:calc(50% + ${Math.cos(a)*r}px - 15px);top:calc(50% + ${Math.sin(a)*r}px - 15px)">${ICON[k]}</span>`}).join('');
+})();
 </script>
 </body>
 </html>

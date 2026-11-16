@@ -175,6 +175,7 @@ h1{font-family:var(--serif);font-size:30px;line-height:1.5;letter-spacing:.08em;
     <div class="stack">
       <a class="btn gold" id="letterBtn">あなたに宛てた手紙を読む</a>
       <div class="note" id="letterNote"></div>
+      <a class="btn soft" id="noteBtn" target="_blank" rel="noopener">noteをフォローする</a>
       <button class="btn soft" id="deepBtn" onclick="begin('deep')">くわしい診断（ちがう16の場面）で「こころの影」も見る</button>
       <button class="btn ghost" onclick="copyShare()">結果をコピーしてシェアする</button>
       <button class="btn ghost" onclick="toggleTypes()">ほかのタイプも見る</button>
@@ -195,6 +196,8 @@ const LETTER_URLS = { subaru:"", oborozuki:"", hokkyokusei:"", akenomyojo:"", ma
 const COMBO_URLS = {};
 // noteのクリエイターページURL（手紙がまだ無いときの行き先）
 const NOTE_TOP_URL = "";
+// noteのクリエイターページ（フォローボタンの行き先）
+const NOTE_URL = "https://note.com/kokoro_hitokoto";
 /* ================================================================ */
 
 const ORDER=["subaru","oborozuki","hokkyokusei","akenomyojo","mangetsu","mikazuki"];
@@ -384,7 +387,8 @@ function renderResult(main,sub){
   const url=comboUrl||LETTER_URLS[main]||NOTE_TOP_URL;
   const btn=$('letterBtn');
   if(url){btn.href=url;btn.textContent=comboUrl?`${t.name}×${sub?TYPES[sub].name:'まっすぐ'}のあなたへの手紙を読む`:`${t.name}のあなたに宛てた手紙を読む`;btn.style.opacity=1;btn.style.pointerEvents='auto';$('letterNote').textContent='noteで、このタイプのあなただけに宛てた手紙を書いています。'}
-  else{btn.removeAttribute('href');btn.textContent=`${t.name}のあなたへの手紙は、準備中です`;btn.style.opacity=.55;btn.style.pointerEvents='none';$('letterNote').textContent='noteで「こころにひとこと」と検索すると、届いたときに読めます。'}
+  else{btn.removeAttribute('href');btn.textContent=`${t.name}のあなたへの手紙は、準備中です`;btn.style.opacity=.55;btn.style.pointerEvents='none';$('letterNote').textContent='noteをフォローしておくと、手紙が出たときにお知らせが届きます。'}
+  const nb=$('noteBtn');if(NOTE_URL){nb.href=NOTE_URL;nb.style.display='block';nb.textContent=url?'noteをフォローする':'noteをフォローして、手紙を待つ'}else{nb.style.display='none'}
   $('deepBtn').style.display=mode==='quick'&&res&&res.main===main?'block':'none';
   $('types').innerHTML=ORDER.map(x=>`<button onclick="renderResult('${x}','')">${ICON[x]}<b>${TYPES[x].name}</b><small>${TYPES[x].catch.replace('<br>','')}</small></button>`).join('');
   $('types').style.display='none';

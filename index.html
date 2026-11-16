@@ -72,7 +72,7 @@ body.dark,html.dark{background:var(--navy)}body.dark .wrap>.brand{display:none}#
     <p class="small">正解はありません。考えすぎず、読んだ瞬間に「これがほしい」と思った言葉を。</p>
     <div class="spacer"></div>
     <button class="mode" onclick="begin('quick')"><b>かんたん診断</b><span>8つの場面・約1分／6つのタイプから、あなたのタイプがわかる</span></button>
-    <button class="mode deep" onclick="begin('deep')"><b>くわしい診断</b><span>16の場面・約3分／タイプに加えて「こころの影」までわかる。全36通り</span></button>
+    <button class="mode deep" onclick="begin('deep')"><b>くわしい診断</b><span>かんたん診断とはちがう16の場面・約3分／タイプに加えて「こころの影」までわかる。全36通り</span></button>
   </section>
 
   <section class="view" id="quiz">
@@ -99,7 +99,7 @@ body.dark,html.dark{background:var(--navy)}body.dark .wrap>.brand{display:none}#
     <div class="stack">
       <a class="btn gold" id="letterBtn">あなたに宛てた手紙を読む</a>
       <div class="note" id="letterNote"></div>
-      <button class="btn primary" id="deepBtn" onclick="begin('deep')" style="background:var(--cream);color:var(--navy)">くわしい診断で「こころの影」も見る</button>
+      <button class="btn primary" id="deepBtn" onclick="begin('deep')" style="background:var(--cream);color:var(--navy)">くわしい診断（ちがう16の場面）で「こころの影」も見る</button>
       <button class="btn ghost" onclick="copyShare()">結果をコピーしてシェアする</button>
       <button class="btn ghost" onclick="toggleTypes()">ほかのタイプも見る</button>
       <div class="types" id="types" style="display:none"></div>
@@ -200,7 +200,7 @@ const COMBO={
  mangetsu_:"満月の性質が、まっすぐ強く出ています。明るい自分でいることが、もうあなたの一部になっているほど。",
  mikazuki_:"三日月の性質が、まっすぐ強く出ています。自分に厳しくすることが、もう呼吸のようになっているほど。"
 };
-// 最初の8問＝かんたん診断、全16問＝くわしい診断
+// かんたん診断＝Q_QUICKの8問／くわしい診断＝Q_DEEPの16問（質問は1つもかぶらない）
 const Q=[
  ["仕事でミスをした、帰り道。",{subaru:"「誰も怒ってないよ。安心して」",oborozuki:"「次は、あなたのやり方でやってみたら？」",hokkyokusei:"「いつもフォローしてくれてるの、知ってるよ」",akenomyojo:"「一晩寝たら、思ってるより小さなことだよ」",mangetsu:"「悔しいなら、悔しいって言っていいよ」",mikazuki:"「ひとつのミスで、あなたの全部は決まらない」"}],
  ["友達の誘いを、断った夜。",{subaru:"「断っても、あの子はあなたを嫌いにならないよ」",oborozuki:"「行きたくないって思えたの、えらいよ」",hokkyokusei:"「たまには、あなたが休む番」",akenomyojo:"「断った理由、もう考えなくていいよ」",mangetsu:"「一人になりたい日があっても、いいんだよ」",mikazuki:"「断れた自分を、責めなくていい」"}],
@@ -217,15 +217,24 @@ const Q=[
  ["新しい場所で、まだなじめないとき。",{subaru:"「空気を読まなくても、ここにいていい」",oborozuki:"「合わせるより、あなたらしくいていい」",hokkyokusei:"「最初から役に立とうとしなくていい」",akenomyojo:"「なじむのに時間がかかるのは、普通のこと」",mangetsu:"「無理に明るくしなくても、ちゃんと伝わる」",mikazuki:"「できないことがあって、当たり前の時期だよ」"}],
  ["誰かに、頼みごとをされたとき。",{subaru:"「断っても、関係は変わらないよ」",oborozuki:"「できないって、言ってもいいんだよ」",hokkyokusei:"「あなたばかりが、引き受けなくていい」",akenomyojo:"「すぐに返事しなくても、大丈夫」",mangetsu:"「笑顔で引き受けなくても、いいよ」",mikazuki:"「全部を完璧にこなさなくていい」"}],
  ["誰かに、ほめられたとき。",{subaru:"「あなたがいると、みんなが楽になるんだよ」",oborozuki:"「それは、あなたが選んだから生まれたものだよ」",hokkyokusei:"「ずっと前から、気づいてたよ」",akenomyojo:"「その言葉、今夜思い出しながら眠ってね」",mangetsu:"「照れずに、そのまま喜んでいいよ」",mikazuki:"「『でも』をつけずに、受け取っていいよ」"}],
- ["一年の終わりに、誰かからひとことだけもらえるなら。",{subaru:"「今年も、たくさんの人をあたためたね」",oborozuki:"「来年は、あなたの好きを増やそう」",hokkyokusei:"「今年いちばん頑張ったのは、あなただよ」",akenomyojo:"「迷いながらでも、ちゃんとここまで来たね」",mangetsu:"「来年は、素のあなたにもっと会いたい」",mikazuki:"「足りなかったことより、できたことを数えよう」"}]
+ ["一年の終わりに、誰かからひとことだけもらえるなら。",{subaru:"「今年も、たくさんの人をあたためたね」",oborozuki:"「来年は、あなたの好きを増やそう」",hokkyokusei:"「今年いちばん頑張ったのは、あなただよ」",akenomyojo:"「迷いながらでも、ちゃんとここまで来たね」",mangetsu:"「来年は、素のあなたにもっと会いたい」",mikazuki:"「足りなかったことより、できたことを数えよう」"}],
+ ["誰にも言えなかった悩みを、やっと話せたとき。",{subaru:"「私に気を使わずに、全部話していいよ」",oborozuki:"「それで、あなたはどうしたいと思ってる？」",hokkyokusei:"「ずっと一人で抱えてたんだね」",akenomyojo:"「今夜はもう、答えを出さなくていいよ」",mangetsu:"「弱いところを見せてくれて、ありがとう」",mikazuki:"「そんなふうに悩めるあなたは、ちゃんとしてるよ」"}],
+ ["昔の自分を、ふと思い出したとき。",{subaru:"「あの頃も、周りのためによく頑張ってたね」",oborozuki:"「あの頃できなかった選択、今ならしていいよ」",hokkyokusei:"「あの頃のあなたがいたから、今がある」",akenomyojo:"「過去のことで、今夜を使わなくていい」",mangetsu:"「泣きたかったあの頃の自分も、ちゃんと大事」",mikazuki:"「あの頃の失敗は、もう許していいよ」"}],
+ ["大切な人と、ケンカをしたあと。",{subaru:"「関係は、一回のケンカで壊れたりしない」",oborozuki:"「言い返せたあなたを、誇っていいよ」",hokkyokusei:"「いつも先に謝るのは、あなただったよね」",akenomyojo:"「どう謝るかは、明日考えればいい」",mangetsu:"「怒った顔を見せられる相手で、よかったね」",mikazuki:"「全部があなたのせいじゃない」"}],
+ ["大切な人に「本音を聞かせて」と言われたとき。",{subaru:"「本音を言っても、あなたを嫌いにならないよ」",oborozuki:"「正解じゃなくていい。あなたの気持ちが聞きたい」",hokkyokusei:"「たまには、あなたの話を聞かせて」",akenomyojo:"「まとまってなくても、ゆっくりでいいよ」",mangetsu:"「笑わずに話していいよ」",mikazuki:"「どんな本音でも、がっかりしないよ」"}],
+ ["何もかもうまくいかなかった、一週間の終わり。",{subaru:"「週末は、誰のことも気にしなくていいよ」",oborozuki:"「週末くらい、やりたくないことは断っていい」",hokkyokusei:"「今週も、あなたがいたから回ったんだよ」",akenomyojo:"「来週のことは、来週のあなたが考える」",mangetsu:"「元気なふりをやめて、ゆっくりしよう」",mikazuki:"「うまくいかなかったのは、あなたがダメだからじゃない」"}],
+ ["友達から、幸せな報告を聞いたとき。",{subaru:"「お祝いの空気に、合わせすぎなくていいよ」",oborozuki:"「あなたの幸せは、あなたの形でいい」",hokkyokusei:"「あなたの頑張りも、ちゃんと報われるよ」",akenomyojo:"「焦りは、夜にだけ大きく見えるものだよ」",mangetsu:"「笑顔の裏の少しの寂しさ、隠さなくていい」",mikazuki:"「うらやましいと思った自分を、責めなくていい」"}],
+ ["誰にも必要とされていない気がしたとき。",{subaru:"「あなたがいるだけで、空気がやわらかいよ」",oborozuki:"「誰かのためじゃなく、あなたのためにいていい」",hokkyokusei:"「あなたがいなくなったら、困る人がちゃんといる」",akenomyojo:"「そう感じる夜は、心が疲れているだけ」",mangetsu:"「明るくなくても、あなたは必要な人」",mikazuki:"「役に立たなくても、あなたには価値がある」"}],
+ ["鏡に映った、疲れた自分の顔を見たとき。",{subaru:"「今日はもう、誰にも気を使わなくていいよ」",oborozuki:"「今夜は、あなたの好きなことだけしよう」",hokkyokusei:"「その顔は、頑張ってきた証拠だよ」",akenomyojo:"「眠れば、明日の顔はちゃんと変わってる」",mangetsu:"「その顔、誰かに見せてもいいんだよ」",mikazuki:"「疲れた顔のあなたも、ちゃんときれい」"}]
 ];
+const Q_QUICK=Q.slice(0,8), Q_DEEP=Q.slice(8);
 
 let mode="quick", qs=[], i=0, answers=[], shuffled=[], res=null;
 const FROM=(new URLSearchParams(location.search).get("from")||"direct").slice(0,30);
 const $=id=>document.getElementById(id);
 function show(id){const d=id==='result';document.body.classList.toggle('dark',d);document.documentElement.classList.toggle('dark',d);document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));$(id).classList.add('on');window.scrollTo(0,0)}
 function shuffle(a){a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]]}return a}
-function begin(m){mode=m;qs=m==='quick'?Q.slice(0,8):Q;i=0;answers=[];shuffled=qs.map(()=>shuffle(ORDER));show('quiz');renderQ()}
+function begin(m){mode=m;qs=m==='quick'?Q_QUICK:Q_DEEP;i=0;answers=[];shuffled=qs.map(()=>shuffle(ORDER));show('quiz');renderQ()}
 function renderQ(){
   const [scene,opts]=qs[i];
   $('count').textContent=`${mode==='quick'?'かんたん診断':'くわしい診断'}　${i+1} ／ ${qs.length}`;
